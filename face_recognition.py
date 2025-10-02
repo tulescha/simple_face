@@ -5,6 +5,7 @@ from face_database import FaceDatabase
 from face_model import FaceModel
 from face_detector import FaceDetector
 
+
 class FaceRecognitionSystem:
     def __init__(self, threshold=0.6):
         self.db = FaceDatabase()
@@ -48,7 +49,13 @@ class FaceRecognitionSystem:
         self.db.add_face(name, avg_features)
         print(f"✅ Пользователь {name} добавлен в базу")
 
-    def recognize(self):
+    def recognize(self, high_thr=0.95, low_thr=0.80):
+        """
+        Распознавание лиц с 3 уровнями:
+        - >= high_thr: уверенный матч (зелёный)
+        - >= low_thr: сомнительный матч (жёлтый)
+        - ниже: Unknown (красный)
+        """
         if not self.db.has_faces():
             print("❌ База пуста!")
             return
@@ -67,21 +74,36 @@ class FaceRecognitionSystem:
             face, box = self.detector.detect(frame)
             if face is not None:
                 features = self.model.extract_features(face)
-                name, sim = "Unknown", 0.0
+                best_name, best_sim = "Unknown", 0.0
+
+                # ищем наиболее похожее лицо
                 for db_name, db_features in self.db.all_faces().items():
-                    s = self._cosine_similarity(features, db_features)
-                    if s > sim and s > self.threshold:
-                        name, sim = db_name, s
+                    sim = self._cosine_similarity(features, db_features)
+                    if sim > best_sim:
+                        best_sim = sim
+                        best_name = db_name
 
                 (x1, y1, x2, y2) = box
-                color = (0, 255, 0) if name != "Unknown" else (0, 0, 255)
+
+                # логика порогов
+                if best_sim >= high_thr:
+                    color = (0, 255, 0)  # зелёный
+                    label = f"{best_name} ({best_sim:.2f})"
+                elif best_sim >= low_thr:
+                    color = (0, 255, 255)  # жёлтый
+                    label = f"{best_name}? ({best_sim:.2f})"
+                else:
+                    color = (0, 0, 255)  # красный
+                    label = f"Unknown ({best_sim:.2f})"
+                    best_name = "Unknown"
+
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
-                cv2.putText(frame, f"{name} ({sim:.2f})", (x1, y1 - 10),
+                cv2.putText(frame, label, (x1, y1 - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
 
             cv2.imshow("Распознавание", frame)
             key = cv2.waitKey(30)
-            if key in [27, ord('q'), ord('Q')]:
+            if key in [27, ord('Q')]:
                 break
 
         cap.release()
