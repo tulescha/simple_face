@@ -11,83 +11,97 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Система распознавания лиц</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>350</y>
-      <width>101</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Просмотр базы</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>280</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Зарегистрировать пользователя</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>320</y>
-      <width>151</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Запуск распознавания</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_4">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>380</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Выход</string>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="textBrowser">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>240</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="leftLayout">
+      <item>
+       <widget class="QLabel" name="video_label">
+        <property name="minimumSize">
+         <size>
+          <width>480</width>
+          <height>360</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: black; border: 2px solid gray; color: white;</string>
+        </property>
+        <property name="text">
+         <string>Камера неактивна</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextBrowser" name="textBrowser">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>150</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="rightLayout">
+      <item>
+       <widget class="QPushButton" name="btnRegister">
+        <property name="text">
+         <string>Зарегистрировать пользователя</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnRecognize">
+        <property name="text">
+         <string>Запуск распознавания</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnShowDB">
+        <property name="text">
+         <string>Просмотр базы</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnThresholds">
+        <property name="text">
+         <string>Изменить пороги</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnExit">
+        <property name="text">
+         <string>Выход</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
